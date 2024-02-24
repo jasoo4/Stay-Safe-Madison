@@ -1,0 +1,335 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center content */
+  background: linear-gradient(135deg, #0056b3, #004494); /* Darker gradient */
+  color: white;
+  padding: 20px; /* Adjust padding for aesthetic balance */
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-size: 28px;
+  font-weight: bold;
+  border-bottom: 3px solid #ffffff55;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  width: 100%; /* Ensure header spans the full width */
+}
+
+.site-icon {
+  width: 100px; /* Adjusted for visibility */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 15px; /* Space between icon and title */
+  align-self: flex-start; /* Align icon to the start */
+}
+
+.site-header h1 {
+  margin: 0; /* Remove default margin */
+  flex-grow: 1; /* Allow the title to fill the available space */
+  text-align: center; /* Ensure title is centered */
+}
+
+.site-header h1 a {
+  text-decoration: none; /* Removes underline from links */
+  color: white; /* Keeps the text color white for all states */
+  /* Add additional styles for hover, focus, and active states if desired */
+}
+
+.site-header h1 a:visited {
+  color: white; /* Ensures visited links do not change color */
+}
+
+/* Optional: Add styles for hover and active states to enhance interactivity */
+.site-header h1 a:hover,
+.site-header h1 a:active {
+  color: #cccccc; /* Lighter shade of white for feedback on hover/active, adjust as needed */
+  text-decoration: none; /* Ensures the text remains not underlined on hover/active */
+}
+
+header:hover {
+  background: linear-gradient(
+    135deg,
+    #004191,
+    /* Slightly darker start on hover */ #00357a /* Even darker end on hover */
+  ); /* Adjusted hover gradient for a dynamic effect with darker themes */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover for added depth */
+}
+
+main {
+  display: block;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 20px; /* Adds space between the map and the side panel */
+}
+
+#map-container {
+  flex-grow: 2; /* Allows the map to take more space */
+  border-radius: 8px;
+  overflow: hidden; /* Ensures the map corners are also rounded */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#map {
+  height: 400px;
+  background-color: #e6e6e6;
+  background-image: url("path/to/your/madison_map_image.jpg"); /* Optional: replace with an actual image */
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
+
+#safety-zones {
+  flex-grow: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#safety-zones h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+#safety-zones ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#safety-zones li {
+  margin: 10px 0;
+  padding: 15px;
+  color: #333;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.green-zone {
+  background: #e8f5e9;
+  border-left: 5px solid #4caf50;
+}
+
+.yellow-zone {
+  background: #fffde7;
+  border-left: 5px solid #ffeb3b;
+}
+
+.red-zone {
+  background: #ffebee;
+  border-left: 5px solid #f44336;
+}
+
+#safety-zones li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #map-container,
+  #safety-zones {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+}
+
+#live-alerts,
+#safety-tips {
+  margin-top: 40px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#live-alerts h2,
+#safety-tips h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.alert,
+#safety-tips li {
+  margin: 10px 0;
+  padding: 15px;
+  color: white;
+  text-align: left;
+  border-radius: 5px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  background: #f7f7f7;
+  color: #333; /* For better readability */
+}
+
+footer {
+  background-color: #004d99;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px; /* Ensure there's space between the chart and footer */
+  border-top: 1px solid #e9ecef;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* Display list items in a row */
+  justify-content: center; /* Center the list horizontally */
+  align-items: center; /* Center items vertically */
+}
+
+.footer-links li {
+  margin: 0 10px; /* Add some spacing around each list item */
+}
+
+.footer-links li:not(:last-child)::after {
+  content: "|"; /* Add a separator */
+  margin-left: 10px; /* Add some space before the separator */
+}
+
+.footer-links a {
+  color: #82b1ff; /* A lighter blue for better visibility and contrast */
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .footer-links li {
+    display: block; /* Stack links vertically on smaller screens */
+    margin: 5px 0; /* Adjusted margin for vertical layout */
+  }
+
+  .footer-links li:not(:last-child)::after {
+    display: none; /* Remove separator for vertical layout */
+  }
+}
+
+#crime-stats-chart {
+  text-align: center; /* Center-align the chart title and image */
+  margin-top: 40px; /* Add some space above the chart for visual separation */
+  padding: 20px; /* Add padding around the content for spacing */
+  background: #f0f2f5; /* Match the page background or choose a fitting color */
+}
+
+.content-wrapper {
+  /* Styling to visually group the map and safety zones together */
+  margin-bottom: 40px; /* Adds space between this wrapper and the chart section */
+}
+.chart-section {
+  /* Specific styling for the chart section to set it apart */
+  padding: 20px;
+  background-color: #fff; /* Optional: background color to highlight the section */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds depth */
+  margin: auto;
+  max-width: 80%; /* Adjust based on your design preference */
+  text-align: center; /* Centers the chart title and image */
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; /* Align items vertically */
+  flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+  padding: 20px;
+}
+
+#map-container {
+  flex: 1.75; /* Takes up more space */
+  margin-right: 20px; /* Add some space between the map and the safety zones */
+}
+
+#safety-zones {
+  flex: 1; /* Takes up less space compared to the map */
+  max-height: 250px;
+}
+
+#map {
+  height: 700px;
+  background-color: #e6e6e6; /* Example background color */
+  /* Add your styles here */
+}
+
+#crime-stats-chart {
+  width: 100%; /* Ensures the chart section takes full width */
+  margin-top: 20px; /* Space above the chart section */
+  text-align: center; /* Centers the chart image */
+}
+
+#pie-chart {
+  max-width: 100%; /* Ensures the image is responsive */
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .flex-container {
+    flex-direction: column;
+  }
+  #map-container,
+  #safety-zones {
+    margin-right: 0; /* Removes margin between items on smaller screens */
+  }
+}
+
+#team-members {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px; /* Adds space between grid items */
+}
+
+.member {
+  background-color: #f0f2f5;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  gap: 15px; /* Adds space between vertical items */
+}
+
+.member-image {
+  width: 150px; /* Width of the placeholder image */
+  height: 150px; /* Height of the placeholder image */
+  border-radius: 50%; /* Makes the image round */
+  object-fit: cover; /* Ensures the image covers the area nicely */
+  border: 3px solid #ffffff; /* Optional: Adds a border around the image */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth */
+}
+
+.member h3 {
+  margin: 10px 0 5px; /* Adjusts spacing around the name */
+}
+
+.member p {
+  margin: 4px 0; /* Fine-tunes spacing between details */
+  text-align: center; /* Ensures text is centered */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #team-members {
+    grid-template-columns: 1fr; /* Stacks members vertically on smaller screens */
+  }
+}

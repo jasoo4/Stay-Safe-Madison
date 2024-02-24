@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stay Safe Madison</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="ICON.jpeg" type="image/x-icon" />
+  </head>
+  <body>
+    <header class="site-header">
+      <img src="ICON.jpeg" alt="Site Icon" class="site-icon" />
+      <h1>Stay Safe Madison</h1>
+    </header>
+    <main>
+      <!-- Flex container for side by side layout of map and safety zones -->
+      <div class="flex-container">
+        <section id="map-container">
+          <div id="map">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2914.759327965162!2d-89.40123028452355!3d43.07305197914409!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880653355537a837%3A0x404fbfa4126b1acf!2sMadison%2C%20WI%2C%20USA!5e0!3m2!1sen!2s!4v1610562270623!5m2!1sen!2s"
+              width="600"
+              height="450"
+              frameborder="0"
+              style="border: 0"
+              allowfullscreen=""
+              aria-hidden="false"
+              tabindex="0"
+            >
+            </iframe>
+          </div>
+          <script
+            async
+            defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDORt-lCJ_4f06_ccxNGfL6NOKhADFVGgc&callback=initMap"
+          ></script>
+          <script>
+            var map;
+            var userMarker;
+            var crimeCircles = [];
+
+            function initMap() {
+              // Try HTML5 geolocation
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                  var userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  };
+                  map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 12,
+                    center: userLocation,
+                  });
+
+                  // Add a marker for the user's location
+                  userMarker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    icon: {
+                      url: "https://cdn4.iconfinder.com/data/icons/flatastic-11-1/256/user-red-512.png", // Use a person icon for the marker
+                      scaledSize: new google.maps.Size(35, 35),
+                    },
+                  });
+
+                  var fileName = "your_csv_file.csv"; // Enter your CSV file name here
+                  var xhr = new XMLHttpRequest();
+                  xhr.open("GET", fileName);
+                  xhr.onload = function () {
+                    if (xhr.status === 200) {
+                      var rows = xhr.responseText.split("\n");
+                      rows.forEach(function (row) {
+                        var data = row.split(",");
+                        var location = {
+                          lat: parseFloat(data[0]),
+                          lng: parseFloat(data[1]),
+                          crimeCount: parseInt(data[2]),
+                        };
+                        var circle = new google.maps.Circle({
+                          strokeColor: getZoneColor(location.crimeCount),
+                          strokeOpacity: 0.8,
+                          strokeWeight: 2,
+                          fillColor: getZoneColor(location.crimeCount),
+                          fillOpacity: 0.35,
+                          map: map,
+                          center: location,
+                          radius: Math.sqrt(location.crimeCount) * 35, // Adjust the radius based on crime count
+                        });
+                        crimeCircles.push(circle);
+                      });
+                    }
+                  };
+                  xhr.send();
+
+                  // Check if the user marker is within a red circle and update safety zones accordingly
+                  google.maps.event.addListener(
+                    map,
+                    "bounds_changed",
+                    function () {
+                      var isInRedCircle = false;
+                      var isInYellowCircle = false;
+                      for (var i = 0; i < crimeCircles.length; i++) {
+                        if (
+                          google.maps.geometry.spherical.computeDistanceBetween(
+                            userMarker.getPosition(),
+                            crimeCircles[i].getCenter()
+                          ) <= crimeCircles[i].getRadius() &&
+                          crimeCircles[i].fillColor === "red"
+                        ) {
+                          isInRedCircle = true;
+                          break;
+                        }
+                        if (
+                          google.maps.geometry.spherical.computeDistanceBetween(
+                            userMarker.getPosition(),
+                            crimeCircles[i].getCenter()
+                          ) <= crimeCircles[i].getRadius() &&
+                          crimeCircles[i].fillColor === "yellow"
+                        ) {
+                          isInYellowCircle = true;
+                          break;
+                        }
+                      }
+                      if (isInRedCircle) {
+                        document.getElementById(
+                          "safety-zones"
+                        ).style.backgroundColor = "red";
+                      } else if (isInYellowCircle) {
+                        document.getElementById(
+                          "safety-zones"
+                        ).style.backgroundColor = "yellow";
+                      } else {
+                        document.getElementById(
+                          "safety-zones"
+                        ).style.backgroundColor = "green";
+                      }
+                    }
+                  );
+                });
+              } else {
+                // Browser doesn't support Geolocation
+                console.log("Browser doesn't support Geolocation");
+              }
+            }
+
+            function getZoneColor(crimeCount) {
+              if (crimeCount >= 15) {
+                return "red"; // High crime density
+              } else if (crimeCount >= 5) {
+                return "yellow"; // Moderate crime density
+              } else {
+                return "green"; // Low crime density
+              }
+            }
+          </script>
+        </section>
+        <aside id="safety-zones">
+          <h2>Safety Zones</h2>
+          <ul>
+            <li class="green-zone">Green Zone (Safe)</li>
+            <li class="yellow-zone">Yellow Zone (Be Careful)</li>
+            <li class="red-zone">Red Zone (Danger)</li>
+          </ul>
+        </aside>
+      </div>
+      <!-- Pie Chart Section Below -->
+
+      <div id="external-content">
+        <h3
+          style="
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            padding-bottom: 0;
+            background: #f0f2f5;
+          "
+        >
+          Recent Crime Map
+        </h3>
+        <iframe src="madison_crime_map.html" width="100%" height="600"></iframe>
+      </div>
+      <section id="crime-stats-chart">
+        <h3>Crime Statistics</h3>
+        <img
+          src="pie.jpeg"
+          alt="Pie Chart of Crime Statistics"
+          id="pie-chart"
+        />
+      </section>
+    </main>
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 Stay Safe Madison. All rights reserved.</p>
+        <ul class="footer-links">
+          <li><a href="Aboutus.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </body>
+</html>
